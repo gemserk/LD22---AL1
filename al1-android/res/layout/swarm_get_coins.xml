@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/background"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#cccccc"
+    >
+    
+    <include layout="@layout/swarm_header" />
+
+	<Button
+		android:id="@+id/tapjoy"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="10dip"
+		android:text="Tapjoy!"
+		/>
+		  
+	<Button
+		android:id="@+id/zong"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="10dip"
+		android:text="SMS Billing"
+		/>    
+        	
+</LinearLayout>

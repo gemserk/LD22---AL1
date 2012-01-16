@@ -248,5 +248,12 @@
 			<classifier>natives-armeabi-v7a</classifier>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.swarmconnect.swarm</groupId>
+			<artifactId>swarm</artifactId>
+			<version>20111228-2132</version>
+		</dependency>
+
 	</dependencies>
 </project>
