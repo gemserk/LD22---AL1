@@ -103,7 +103,7 @@ public class PlayGameState extends GameStateImpl {
 
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(realGameZoom);
-		
+
 		Rectangle worldBounds = new Rectangle(-7.5f, -5.5f, 15f, 11f);
 
 		RenderLayers renderLayers = new RenderLayers();
@@ -192,22 +192,24 @@ public class PlayGameState extends GameStateImpl {
 			}
 		});
 
+		float width = 1f;
+
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(0f, -6.75f, 10f, 2f, 0f)) //
+				.put("spatial", new SpatialImpl(0f, worldBounds.y - width, worldBounds.width, width, 0f)) //
 				.put("force", new Vector2(0f, 100f)) //
 				);
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(0f, 6.75f, 10f, 2f, 0f)) //
+				.put("spatial", new SpatialImpl(0f, worldBounds.y + worldBounds.height + width, worldBounds.width, width, 0f)) //
 				.put("force", new Vector2(0f, -100f)) //
 				);
 
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(-10f, 0f, 2f, 20f, 0f)) //
+				.put("spatial", new SpatialImpl(worldBounds.x - width, 0f, width, worldBounds.height, 0f)) //
 				.put("force", new Vector2(100f, 0f)) //
 				);
 
 		entityFactory.instantiate(injector.getInstance(ForceInAreaTemplate.class), new ParametersWrapper() //
-				.put("spatial", new SpatialImpl(10f, 0f, 2f, 20f, 0f)) //
+				.put("spatial", new SpatialImpl(worldBounds.x + worldBounds.width + width, 0f, width, worldBounds.height, 0f)) //
 				.put("force", new Vector2(-100f, 0f)) //
 				);
 
