@@ -21,7 +21,7 @@ public class StickControllerScript extends ScriptJavaImpl {
 
 	int touch = 0;
 
-//	final InterpolationFunction interpolationFunction = InterpolationFunctions.easeOut();
+	// final InterpolationFunction interpolationFunction = InterpolationFunctions.easeOut();
 	final InterpolationFunction interpolationFunction = InterpolationFunctions.linear();
 
 	public final Vector2 stickPosition = new Vector2();
@@ -72,18 +72,19 @@ public class StickControllerScript extends ScriptJavaImpl {
 		tmp.set(stickPosition.x, stickPosition.y);
 		tmp.sub(touchPosition.x, touchPosition.y);
 
-		if (tmp.len() > radius) {
-
-			newPosition.set(tmp);
-			newPosition.nor().mul(radius);
-
-			newPosition.sub(tmp);
-			newPosition.add(stickPosition);
-
-			stickPosition.set(newPosition);
-
-			tmp.nor().mul(radius);
-		}
+		// relocate the center of the stick
+		// if (tmp.len() > radius) {
+		//
+		// newPosition.set(tmp);
+		// newPosition.nor().mul(radius);
+		//
+		// newPosition.sub(tmp);
+		// newPosition.add(stickPosition);
+		//
+		// stickPosition.set(newPosition);
+		//
+		// tmp.nor().mul(radius);
+		// }
 
 		float t = tmp.len() / radius;
 		float v = interpolationFunction.interpolate(t);

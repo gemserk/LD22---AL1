@@ -31,7 +31,6 @@ import com.gemserk.games.ludumdare.al1.GameResources;
 import com.gemserk.games.ludumdare.al1.Tags;
 import com.gemserk.games.ludumdare.al1.components.ControllerComponent;
 import com.gemserk.games.ludumdare.al1.scripts.ExplodeWhenCollideScript;
-import com.gemserk.games.ludumdare.al1.scripts.KeyboardControllerScript;
 import com.gemserk.games.ludumdare.al1.scripts.MovementScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.resources.ResourceManager;
@@ -105,7 +104,8 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		Input input = remoteInput;
 
 		// Script controllerScript = injector.getInstance(FollowMouseMovementScript2.class);
-		Script controllerScript = injector.getInstance(KeyboardControllerScript.class);
+		// Script controllerScript = injector.getInstance(KeyboardControllerScript.class);
+		Script controllerScript = new StickControllerScript(input);
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			controllerScript = new StickControllerScript(input);
 		}
