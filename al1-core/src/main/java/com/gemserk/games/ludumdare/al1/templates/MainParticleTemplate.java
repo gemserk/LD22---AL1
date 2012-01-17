@@ -5,6 +5,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -21,7 +22,8 @@ import com.gemserk.commons.artemis.scripts.Script;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
-import com.gemserk.commons.gdx.camera.CameraImpl;
+import com.gemserk.commons.gdx.camera.Camera;
+import com.gemserk.commons.gdx.camera.CameraRestrictedImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
 import com.gemserk.commons.reflection.Injector;
@@ -97,7 +99,9 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 
 		Libgdx2dCamera camera = parameters.get("camera");
 
-		entity.addComponent(new CameraComponent(camera, new CameraImpl(0f, 0f, 1f, 0f)));
+//		entity.addComponent(new CameraComponent(camera, new CameraImpl(0f, 0f, 1f, 0f)));
+		entity.addComponent(new CameraComponent(camera, new CameraRestrictedImpl(0f, 0f, 48f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 
+				new Rectangle(-11f, -7f, 22f, 14f))));
 
 		entity.addComponent(new ControllerComponent(new Controller()));
 
@@ -117,9 +121,15 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 				new ScriptJavaImpl() {
 					public void update(com.artemis.World world, Entity e) {
 						CameraComponent cameraComponent = Components.getCameraComponent(e);
+						Camera camera = cameraComponent.getCamera();
+						
 						SpatialComponent spatialComponent = Components.getSpatialComponent(e);
 						Vector2 position = spatialComponent.getPosition();
-						cameraComponent.getLibgdx2dCamera().move(position.x, position.y);
+						
+						camera.setPosition(position.x, position.y);
+						
+						cameraComponent.getLibgdx2dCamera().move(camera.getX(), camera.getY());
+						cameraComponent.getLibgdx2dCamera().zoom(camera.getZoom());
 					}
 				}//
 
