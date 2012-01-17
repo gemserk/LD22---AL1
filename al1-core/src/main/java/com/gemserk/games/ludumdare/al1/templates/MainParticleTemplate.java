@@ -5,9 +5,11 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.CameraComponent;
+import com.gemserk.commons.artemis.components.Components;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
@@ -16,6 +18,7 @@ import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.components.TagComponent;
 import com.gemserk.commons.artemis.scripts.Script;
+import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.camera.CameraImpl;
@@ -101,7 +104,7 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 
 		Input input = remoteInput;
 
-//		Script controllerScript = injector.getInstance(FollowMouseMovementScript2.class);
+		// Script controllerScript = injector.getInstance(FollowMouseMovementScript2.class);
 		Script controllerScript = injector.getInstance(KeyboardControllerScript.class);
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			controllerScript = new StickControllerScript(input);
@@ -110,9 +113,16 @@ public class MainParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new ScriptComponent( //
 				controllerScript, //
 				injector.getInstance(ExplodeWhenCollideScript.class), //
-				injector.getInstance(MovementScript.class) //
+				injector.getInstance(MovementScript.class), //
+				new ScriptJavaImpl() {
+					public void update(com.artemis.World world, Entity e) {
+						CameraComponent cameraComponent = Components.getCameraComponent(e);
+						SpatialComponent spatialComponent = Components.getSpatialComponent(e);
+						Vector2 position = spatialComponent.getPosition();
+						cameraComponent.getLibgdx2dCamera().move(position.x, position.y);
+					}
+				}//
+
 		));
-
 	}
-
 }
