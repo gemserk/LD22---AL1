@@ -86,6 +86,7 @@ public class PlayGameState extends GameStateImpl {
 	Synchronizer synchronizer;
 
 	ConvexHull2d convexHull2d;
+	private Rectangle worldBounds;
 
 	@Override
 	public void init() {
@@ -104,7 +105,7 @@ public class PlayGameState extends GameStateImpl {
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(realGameZoom);
 
-		Rectangle worldBounds = new Rectangle(-10f, -8f, 20f, 16f);
+		worldBounds = new Rectangle(-10f, -8f, 20f, 16f);
 
 		RenderLayers renderLayers = new RenderLayers();
 
@@ -145,8 +146,8 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 
-		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
-		scene.addRenderSystem(new Box2dLinearVelocityRenderSystem(worldCamera));
+//		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
+//		scene.addRenderSystem(new Box2dLinearVelocityRenderSystem(worldCamera));
 		scene.addRenderSystem(new RenderScriptSystem());
 
 		scene.init();
@@ -270,6 +271,9 @@ public class PlayGameState extends GameStateImpl {
 		SpriteBatchUtils.drawMultilineText(spriteBatch, font, customDecimalFormat.format((long) score), 20f, Gdx.graphics.getHeight() * 0.95f, 0f, 0.5f);
 		spriteBatch.end();
 
+		ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
+		ImmediateModeRendererUtils.drawRectangle(worldBounds, Color.BLUE);
+		
 		renderMoveableStickOnScreen();
 	}
 
@@ -295,6 +299,8 @@ public class PlayGameState extends GameStateImpl {
 		Vector2 stickPosition = stickControllerScript.stickPosition;
 		Vector2 touchPosition = stickControllerScript.touchPosition;
 
+		ImmediateModeRendererUtils.getProjectionMatrix().set(normalCamera.getCombinedMatrix());
+		
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius * 0.1f, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(touchPosition.x, touchPosition.y, stickControllerScript.radius * 0.25f, Color.RED);

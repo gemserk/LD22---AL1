@@ -58,7 +58,7 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			ImmutableBag<Entity> particles = world.getGroupManager().getEntities(Groups.EnemyCharacter);
 			Body body = Components.getPhysicsComponent(e).getPhysics().getBody();
 
-			if (particles.size() < 2) {
+			if (particles.size() < 3) {
 				body.setTransform(0, 0, 0);
 				body.setActive(false);
 				return;
