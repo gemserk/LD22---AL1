@@ -104,7 +104,7 @@ public class PlayGameState extends GameStateImpl {
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(realGameZoom);
 
-		Rectangle worldBounds = new Rectangle(-7.5f, -5.5f, 15f, 11f);
+		Rectangle worldBounds = new Rectangle(-10f, -8f, 20f, 16f);
 
 		RenderLayers renderLayers = new RenderLayers();
 
