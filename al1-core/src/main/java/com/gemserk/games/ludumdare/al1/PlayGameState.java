@@ -96,12 +96,13 @@ public class PlayGameState extends GameStateImpl {
 		shapeRenderer = new ShapeRenderer();
 
 		float gameZoom = Gdx.graphics.getHeight() / 480f;
+		float realGameZoom = 48f * gameZoom;
 
 		normalCamera = new Libgdx2dCameraTransformImpl(0f, 0f);
 		normalCamera.zoom(1f * gameZoom);
 
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
-		worldCamera.zoom(48f * gameZoom);
+		worldCamera.zoom(realGameZoom);
 
 		RenderLayers renderLayers = new RenderLayers();
 
@@ -116,7 +117,7 @@ public class PlayGameState extends GameStateImpl {
 		final BodyBuilder bodyBuilder = new BodyBuilder(physicsWorld);
 
 		TimeStepProviderGameStateImpl timeStepProvider = new TimeStepProviderGameStateImpl(this);
-		
+
 		injector.bind("entityFactory", entityFactory);
 		injector.bind("eventManager", eventManager);
 		injector.bind("physicsWorld", physicsWorld);
@@ -138,7 +139,7 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addRenderSystem(new SpriteUpdateSystem(timeStepProvider));
 		scene.addRenderSystem(new CameraUpdateSystem(timeStepProvider));
-		
+
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 
 		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
@@ -160,13 +161,13 @@ public class PlayGameState extends GameStateImpl {
 
 		Rectangle worldBounds = new Rectangle(-7.5f, -5.5f, 15f, 11f);
 		Rectangle cameraBounds = new Rectangle(worldBounds);
-		
-		MathUtils2.growRectangle(cameraBounds, 7f, 3f);
-		
+
+		// MathUtils2.growRectangle(cameraBounds, 7f, 3f);
+		MathUtils2.growRectangle(cameraBounds, 2f * 160f / realGameZoom, 2f * 160f / realGameZoom);
+
 		entityFactory.instantiate(injector.getInstance(CameraTemplate.class), new ParametersWrapper() //
 				.put("libgdx2dCamera", worldCamera) //
-				.put("camera",  new CameraRestrictedImpl(0f, 0f, 48f * gameZoom, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 
-						cameraBounds)) //
+				.put("camera", new CameraRestrictedImpl(0f, 0f, realGameZoom, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cameraBounds)) //
 				);
 
 		// EntityTemplate shieldTemplate = injector.getInstance(ShieldTemplate.class);
