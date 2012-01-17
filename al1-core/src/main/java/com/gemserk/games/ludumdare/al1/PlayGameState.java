@@ -103,6 +103,8 @@ public class PlayGameState extends GameStateImpl {
 
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(realGameZoom);
+		
+		Rectangle worldBounds = new Rectangle(-7.5f, -5.5f, 15f, 11f);
 
 		RenderLayers renderLayers = new RenderLayers();
 
@@ -125,6 +127,7 @@ public class PlayGameState extends GameStateImpl {
 		injector.bind("synchronizer", synchronizer);
 		injector.bind("shapeRenderer", shapeRenderer);
 		injector.bind("timeStepProvider", timeStepProvider);
+		injector.bind("worldBounds", worldBounds);
 
 		scene.addUpdateSystem(new PreviousStateSpatialSystem());
 		scene.addUpdateSystem(new ScriptSystem());
@@ -159,7 +162,6 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper() //
 				.put("camera", worldCamera));
 
-		Rectangle worldBounds = new Rectangle(-7.5f, -5.5f, 15f, 11f);
 		Rectangle cameraBounds = new Rectangle(worldBounds);
 
 		// MathUtils2.growRectangle(cameraBounds, 7f, 3f);

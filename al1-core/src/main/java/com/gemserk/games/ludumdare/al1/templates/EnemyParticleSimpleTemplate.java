@@ -94,7 +94,9 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 	public static class RandomizeParticleScript extends ScriptJavaImpl {
 
 		private final Vector2 position = new Vector2();
-		private final Rectangle worldRectangle = new Rectangle(-7.5f, -4.5f, 15f, 9f);
+		// private final Rectangle worldRectangle = new Rectangle(-7.5f, -4.5f, 15f, 9f);
+
+		Rectangle worldBounds;
 
 		@Override
 		public void init(World world, Entity e) {
@@ -111,7 +113,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 				position.add(mainCharacterSpatial.getX(), mainCharacterSpatial.getY());
 
-				MathUtils2.truncate(position, worldRectangle);
+				MathUtils2.truncate(position, worldBounds);
 
 				spatial.setPosition(position.x, position.y);
 			}
@@ -154,7 +156,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
 		entity.addComponent(new PreviousStateSpatialComponent());
-		
+
 		entity.addComponent(new ScriptComponent( //
 				injector.getInstance(RandomizeParticleScript.class), //
 				injector.getInstance(FixedMovementScript.class), //
