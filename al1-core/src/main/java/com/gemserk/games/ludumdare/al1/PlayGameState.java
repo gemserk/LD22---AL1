@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.animation4j.transitions.sync.Synchronizer;
 import com.gemserk.commons.artemis.WorldWrapper;
@@ -20,10 +21,12 @@ import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.events.EventManagerImpl;
 import com.gemserk.commons.artemis.render.RenderLayers;
 import com.gemserk.commons.artemis.scripts.Script;
+import com.gemserk.commons.artemis.systems.CameraUpdateSystem;
 import com.gemserk.commons.artemis.systems.EventManagerWorldSystem;
 import com.gemserk.commons.artemis.systems.GroupSystem;
 import com.gemserk.commons.artemis.systems.LimitLinearVelocitySystem;
 import com.gemserk.commons.artemis.systems.PhysicsSystem;
+import com.gemserk.commons.artemis.systems.PreviousStateSpatialSystem;
 import com.gemserk.commons.artemis.systems.ReflectionRegistratorEventSystem;
 import com.gemserk.commons.artemis.systems.RenderLayerSpriteBatchImpl;
 import com.gemserk.commons.artemis.systems.RenderableSystem;
@@ -37,6 +40,7 @@ import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
+import com.gemserk.commons.gdx.camera.CameraRestrictedImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
 import com.gemserk.commons.gdx.games.SpatialImpl;
@@ -44,7 +48,9 @@ import com.gemserk.commons.gdx.graphics.ConvexHull2d;
 import com.gemserk.commons.gdx.graphics.ConvexHull2dImpl;
 import com.gemserk.commons.gdx.graphics.ImmediateModeRendererUtils;
 import com.gemserk.commons.gdx.graphics.SpriteBatchUtils;
+import com.gemserk.commons.gdx.math.MathUtils2;
 import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
+import com.gemserk.commons.gdx.time.TimeStepProviderGameStateImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.text.CustomDecimalFormat;
 import com.gemserk.componentsengine.utils.Interval;
@@ -54,6 +60,7 @@ import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.games.ludumdare.al1.systems.RenderScriptSystem;
+import com.gemserk.games.ludumdare.al1.templates.CameraTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
@@ -108,13 +115,17 @@ public class PlayGameState extends GameStateImpl {
 
 		final BodyBuilder bodyBuilder = new BodyBuilder(physicsWorld);
 
+		TimeStepProviderGameStateImpl timeStepProvider = new TimeStepProviderGameStateImpl(this);
+		
 		injector.bind("entityFactory", entityFactory);
 		injector.bind("eventManager", eventManager);
 		injector.bind("physicsWorld", physicsWorld);
 		injector.bind("bodyBuilder", bodyBuilder);
 		injector.bind("synchronizer", synchronizer);
 		injector.bind("shapeRenderer", shapeRenderer);
+		injector.bind("timeStepProvider", timeStepProvider);
 
+		scene.addUpdateSystem(new PreviousStateSpatialSystem());
 		scene.addUpdateSystem(new ScriptSystem());
 		scene.addUpdateSystem(new TagSystem());
 		scene.addUpdateSystem(new GroupSystem());
@@ -125,8 +136,9 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addUpdateSystem(injector.getInstance(EventManagerWorldSystem.class));
 
-		scene.addRenderSystem(new SpriteUpdateSystem());
-
+		scene.addRenderSystem(new SpriteUpdateSystem(timeStepProvider));
+		scene.addRenderSystem(new CameraUpdateSystem(timeStepProvider));
+		
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 
 		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
@@ -145,6 +157,17 @@ public class PlayGameState extends GameStateImpl {
 		EntityTemplate mainParticleTemplate = injector.getInstance(MainParticleTemplate.class);
 		entityFactory.instantiate(mainParticleTemplate, new ParametersWrapper() //
 				.put("camera", worldCamera));
+
+		Rectangle worldBounds = new Rectangle(-7.5f, -5.5f, 15f, 11f);
+		Rectangle cameraBounds = new Rectangle(worldBounds);
+		
+		MathUtils2.growRectangle(cameraBounds, 7f, 3f);
+		
+		entityFactory.instantiate(injector.getInstance(CameraTemplate.class), new ParametersWrapper() //
+				.put("libgdx2dCamera", worldCamera) //
+				.put("camera",  new CameraRestrictedImpl(0f, 0f, 48f * gameZoom, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 
+						cameraBounds)) //
+				);
 
 		// EntityTemplate shieldTemplate = injector.getInstance(ShieldTemplate.class);
 		// entityFactory.instantiate(shieldTemplate, new ParametersWrapper() //

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.gemserk.commons.artemis.components.GroupComponent;
 import com.gemserk.commons.artemis.components.LinearVelocityLimitComponent;
 import com.gemserk.commons.artemis.components.PhysicsComponent;
+import com.gemserk.commons.artemis.components.PreviousStateSpatialComponent;
 import com.gemserk.commons.artemis.components.PropertiesComponent;
 import com.gemserk.commons.artemis.components.RenderableComponent;
 import com.gemserk.commons.artemis.components.ScriptComponent;
@@ -152,6 +153,8 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new LinearVelocityLimitComponent(1f));
 
 		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
+		entity.addComponent(new PreviousStateSpatialComponent());
+		
 		entity.addComponent(new ScriptComponent( //
 				injector.getInstance(RandomizeParticleScript.class), //
 				injector.getInstance(FixedMovementScript.class), //
