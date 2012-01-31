@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gemserk.animation4j.transitions.sync.Synchronizer;
@@ -146,8 +147,8 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.addRenderSystem(new RenderableSystem(renderLayers));
 
-//		scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
-//		scene.addRenderSystem(new Box2dLinearVelocityRenderSystem(worldCamera));
+		// scene.addRenderSystem(new Box2dRenderSystem(worldCamera, physicsWorld));
+		// scene.addRenderSystem(new Box2dLinearVelocityRenderSystem(worldCamera));
 		scene.addRenderSystem(new RenderScriptSystem());
 
 		scene.init();
@@ -263,6 +264,24 @@ public class PlayGameState extends GameStateImpl {
 		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
 
+		Gdx.gl.glEnable(GL10.GL_BLEND);
+		shapeRenderer.begin(ShapeType.Line);
+
+		int sizeX = 1;
+		int sizeY = 1;
+
+		for (int i = -15; i < 15; i++) {
+			shapeRenderer.setColor(0f, 0f, 1f, 0.4f);
+			shapeRenderer.line(i * sizeX, -1000, i * sizeX, 1000);
+		}
+
+		for (int i = -15; i < 15; i++) {
+			shapeRenderer.setColor(0f, 0f, 1f, 0.4f);
+			shapeRenderer.line(-1000, i * sizeY, 1000, i * sizeY);
+		}
+
+		shapeRenderer.end();
+
 		scene.render();
 
 		normalCamera.apply();
@@ -273,7 +292,7 @@ public class PlayGameState extends GameStateImpl {
 
 		ImmediateModeRendererUtils.getProjectionMatrix().set(worldCamera.getCombinedMatrix());
 		ImmediateModeRendererUtils.drawRectangle(worldBounds, Color.BLUE);
-		
+
 		renderMoveableStickOnScreen();
 	}
 
@@ -300,7 +319,7 @@ public class PlayGameState extends GameStateImpl {
 		Vector2 touchPosition = stickControllerScript.touchPosition;
 
 		ImmediateModeRendererUtils.getProjectionMatrix().set(normalCamera.getCombinedMatrix());
-		
+
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius * 0.1f, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(stickPosition.x, stickPosition.y, stickControllerScript.radius, Color.RED);
 		ImmediateModeRendererUtils.drawSolidCircle(touchPosition.x, touchPosition.y, stickControllerScript.radius * 0.25f, Color.RED);
