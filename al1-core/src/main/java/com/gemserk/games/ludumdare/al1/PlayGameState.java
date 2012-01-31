@@ -194,16 +194,22 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
+				EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
+				injector.injectMembers(spawnerScript);
+				
 				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(5, 10), 5f));
-				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
+				entity.addComponent(new ScriptComponent(spawnerScript));
 			}
 		});
 
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
 			public void apply(Entity entity) {
+				EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
+				injector.injectMembers(spawnerScript);
+				
 				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(4, 8), 2f));
-				entity.addComponent(new ScriptComponent(injector.getInstance(EnemyParticleSpawnerScript.class)));
+				entity.addComponent(new ScriptComponent(spawnerScript));
 			}
 		});
 

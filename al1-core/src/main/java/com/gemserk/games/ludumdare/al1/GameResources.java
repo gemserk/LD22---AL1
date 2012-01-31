@@ -23,6 +23,12 @@ public class GameResources extends LibgdxResourceBuilder {
 		public static final String Shield = "ShieldSprite";
 
 	}
+	
+	public static class Sounds {
+		
+		public static final String Spawn = "SpawnSound";
+		
+	}
 
 	/**
 	 * Only creates all resource declarations, it doesn't load all the stuff yet.
@@ -40,5 +46,8 @@ public class GameResources extends LibgdxResourceBuilder {
 		resource(Sprites.Al2, sprite2().textureAtlas(TextureAtlases.Images, "al2"));
 		resource(Sprites.Al3, sprite2().textureAtlas(TextureAtlases.Images, "al3"));
 		resource(Sprites.Shield, sprite2().textureAtlas(TextureAtlases.Images, "shield"));
+		
+		sound(Sounds.Spawn, "data/audio/spawn.ogg");
+		
 	}
 }

@@ -2,7 +2,6 @@ package com.gemserk.games.ludumdare.al1.scripts;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.badlogic.gdx.math.MathUtils;
 import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityFactory;
@@ -15,11 +14,15 @@ import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
 import com.gemserk.games.ludumdare.al1.components.StoreComponent;
+import com.gemserk.games.ludumdare.al1.triggers.PeriodicTriggerLogic;
+import com.gemserk.games.ludumdare.al1.triggers.Trigger;
 
 public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 
 	EventManager eventManager;
 	EntityFactory entityFactory;
+
+	PeriodicTriggerLogic periodicTriggerLogic;
 
 	@Override
 	public void init(World world, final Entity e) {
@@ -38,39 +41,30 @@ public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 			}
 		});
 		spawnerComponent.store.preCreate(5);
+
+		periodicTriggerLogic = new PeriodicTriggerLogic(3, 0.5f, new Trigger() {
+			@Override
+			public void trigger() {
+				spawnerComponent.store.get();
+			}
+		});
 	}
 
 	@Override
 	public void update(World world, Entity e) {
-		SpawnerComponent spawnerComponent = Components.getSpawnerComponent(e);
-		spawnerComponent.timeToSpawn -= GlobalTime.getDelta();
-
-		if (spawnerComponent.timeToSpawn > 0)
-			return;
-
-		// Entity target = world.getTagManager().getEntity(Tags.MainCharacter);
+		periodicTriggerLogic.update(GlobalTime.getDelta());
+		// SpawnerComponent spawnerComponent = Components.getSpawnerComponent(e);
+		// spawnerComponent.timeToSpawn -= GlobalTime.getDelta();
 		//
-		// SpatialComponent spatialComponent = Components.getSpatialComponent(target);
-		// Spatial spatial = spatialComponent.getSpatial();
+		// if (spawnerComponent.timeToSpawn > 0)
+		// return;
 		//
-		// // EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
+		// // instantiate an entity from the store.
+		// spawnerComponent.store.get();
 		//
-		// position.set(MathUtils.random(5f, 12f), 0f);
-		// position.rotate(MathUtils.random(0, 360f));
-
-		// instantiate an entity from the store.
-		spawnerComponent.store.get();
-
-		// Spatial entitySpatial = Components.getSpatialComponent(entity).getSpatial();
-		//
-		// entitySpatial.setPosition(spatial.getX() + position.x, spatial.getY() + position.y);
-
-		// entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
-		// .put("spatial", new SpatialImpl(spatial.getX() + position.x, spatial.getY() + position.y, 1f, 1f, 0f)));
-
-		spawnerComponent.timeToSpawn = MathUtils.random( //
-				spawnerComponent.spawnInterval.getMin(), //
-				spawnerComponent.spawnInterval.getMax());
+		// spawnerComponent.timeToSpawn = MathUtils.random( //
+		// spawnerComponent.spawnInterval.getMin(), //
+		// spawnerComponent.spawnInterval.getMax());
 	}
 
 }
