@@ -180,7 +180,7 @@ public class PlayGameState extends GameStateImpl {
 				.put("libgdx2dCamera", backgroundCamera) //
 				.put("camera", new CameraImpl(0f, 0f, 24f * gameZoom, 0f)) //
 				.put("targetTag", Tags.MainCharacter) //
-				.put("parallax", 0.25f) //
+				.put("parallax", 0.5f) //
 				);
 
 		// EntityTemplate shieldTemplate = injector.getInstance(ShieldTemplate.class);
