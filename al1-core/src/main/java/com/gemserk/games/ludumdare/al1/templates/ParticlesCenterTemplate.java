@@ -101,7 +101,10 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			for (int j = 0; j < particles.size(); j++) {
 				Entity particle = particles.get(j);
 				StoreComponent storeComponent = Components.getStoreComponent(particle);
-				storeComponent.store.free(particle);
+				if (storeComponent != null && storeComponent.store != null)
+					storeComponent.store.free(particle);
+				else 
+					particle.delete();
 			}
 
 		}

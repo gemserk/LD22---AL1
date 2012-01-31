@@ -55,19 +55,15 @@ import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.gdx.time.TimeStepProviderGameStateImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.text.CustomDecimalFormat;
-import com.gemserk.componentsengine.utils.Interval;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
-import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
-import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.games.ludumdare.al1.systems.RenderScriptSystem;
 import com.gemserk.games.ludumdare.al1.templates.CameraTemplate;
-import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
-import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
 import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ParticlesCenterTemplate;
+import com.gemserk.games.ludumdare.al1.templates.SpawnerSpawnerTemplate;
 
 public class PlayGameState extends GameStateImpl {
 
@@ -191,27 +187,29 @@ public class PlayGameState extends GameStateImpl {
 		// entityFactory.instantiate(shieldTemplate, new ParametersWrapper() //
 		// .put("camera", worldCamera));
 
-		entityFactory.instantiate(new EntityTemplateImpl() {
-			@Override
-			public void apply(Entity entity) {
-				EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
-				injector.injectMembers(spawnerScript);
-				
-				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(5, 10), 5f));
-				entity.addComponent(new ScriptComponent(spawnerScript));
-			}
-		});
+		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class));
 
-		entityFactory.instantiate(new EntityTemplateImpl() {
-			@Override
-			public void apply(Entity entity) {
-				EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
-				injector.injectMembers(spawnerScript);
-				
-				entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(4, 8), 2f));
-				entity.addComponent(new ScriptComponent(spawnerScript));
-			}
-		});
+		// entityFactory.instantiate(new EntityTemplateImpl() {
+		// @Override
+		// public void apply(Entity entity) {
+		// EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
+		// injector.injectMembers(spawnerScript);
+		//
+		// entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleTemplate.class), new Interval(5, 10), 5f));
+		// entity.addComponent(new ScriptComponent(spawnerScript));
+		// }
+		// });
+		//
+		// entityFactory.instantiate(new EntityTemplateImpl() {
+		// @Override
+		// public void apply(Entity entity) {
+		// EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
+		// injector.injectMembers(spawnerScript);
+		//
+		// entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(4, 8), 2f));
+		// entity.addComponent(new ScriptComponent(spawnerScript));
+		// }
+		// });
 
 		float width = 1f;
 
@@ -279,7 +277,7 @@ public class PlayGameState extends GameStateImpl {
 	@Override
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		shapeRenderer.setProjectionMatrix(backgroundCamera.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(backgroundCamera.getModelViewMatrix());
 

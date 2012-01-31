@@ -66,8 +66,10 @@ public class AliveTimeScript extends ScriptJavaImpl {
 			aliveComponent.dyingTime -= GlobalTime.getDelta();
 			if (aliveComponent.dyingTime <= 0f) {
 				StoreComponent storeComponent = Components.getStoreComponent(e);
-				storeComponent.store.free(e);
-				// e.delete();
+				if (storeComponent != null && storeComponent.store != null)
+					storeComponent.store.free(e);
+				else
+					e.delete();
 			}
 		}
 	}
