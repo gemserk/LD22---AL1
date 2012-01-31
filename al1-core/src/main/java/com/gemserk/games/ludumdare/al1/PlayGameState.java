@@ -41,6 +41,7 @@ import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
+import com.gemserk.commons.gdx.camera.CameraImpl;
 import com.gemserk.commons.gdx.camera.CameraRestrictedImpl;
 import com.gemserk.commons.gdx.camera.Libgdx2dCamera;
 import com.gemserk.commons.gdx.camera.Libgdx2dCameraTransformImpl;
@@ -74,9 +75,10 @@ public class PlayGameState extends GameStateImpl {
 	Injector injector;
 
 	Libgdx2dCamera worldCamera;
+	Libgdx2dCamera normalCamera;
+	Libgdx2dCamera backgroundCamera;
 
 	WorldWrapper scene;
-	Libgdx2dCamera normalCamera;
 
 	float score;
 	SpriteBatch spriteBatch;
@@ -105,6 +107,9 @@ public class PlayGameState extends GameStateImpl {
 
 		worldCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
 		worldCamera.zoom(realGameZoom);
+
+		backgroundCamera = new Libgdx2dCameraTransformImpl(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+		backgroundCamera.zoom(24f * gameZoom);
 
 		worldBounds = new Rectangle(-10f, -8f, 20f, 16f);
 
@@ -172,6 +177,14 @@ public class PlayGameState extends GameStateImpl {
 		entityFactory.instantiate(injector.getInstance(CameraTemplate.class), new ParametersWrapper() //
 				.put("libgdx2dCamera", worldCamera) //
 				.put("camera", new CameraRestrictedImpl(0f, 0f, realGameZoom, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cameraBounds)) //
+				.put("targetTag", Tags.MainCharacter) //
+				);
+
+		entityFactory.instantiate(injector.getInstance(CameraTemplate.class), new ParametersWrapper() //
+				.put("libgdx2dCamera", backgroundCamera) //
+				.put("camera", new CameraImpl(0f, 0f, 24f * gameZoom, 0f)) //
+				.put("targetTag", Tags.MainCharacter) //
+				.put("parallax", 0.25f) //
 				);
 
 		// EntityTemplate shieldTemplate = injector.getInstance(ShieldTemplate.class);
@@ -260,9 +273,9 @@ public class PlayGameState extends GameStateImpl {
 	@Override
 	public void render() {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
-		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
+		
+		shapeRenderer.setProjectionMatrix(backgroundCamera.getProjectionMatrix());
+		shapeRenderer.setTransformMatrix(backgroundCamera.getModelViewMatrix());
 
 		Gdx.gl.glEnable(GL10.GL_BLEND);
 		shapeRenderer.begin(ShapeType.Line);
@@ -270,17 +283,20 @@ public class PlayGameState extends GameStateImpl {
 		int sizeX = 1;
 		int sizeY = 1;
 
-		for (int i = -15; i < 15; i++) {
+		for (int i = -25; i < 25; i++) {
 			shapeRenderer.setColor(0f, 0f, 1f, 0.4f);
 			shapeRenderer.line(i * sizeX, -1000, i * sizeX, 1000);
 		}
 
-		for (int i = -15; i < 15; i++) {
+		for (int i = -25; i < 25; i++) {
 			shapeRenderer.setColor(0f, 0f, 1f, 0.4f);
 			shapeRenderer.line(-1000, i * sizeY, 1000, i * sizeY);
 		}
 
 		shapeRenderer.end();
+
+		shapeRenderer.setProjectionMatrix(worldCamera.getProjectionMatrix());
+		shapeRenderer.setTransformMatrix(worldCamera.getModelViewMatrix());
 
 		scene.render();
 
