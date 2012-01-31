@@ -101,16 +101,19 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			for (int j = 0; j < particles.size(); j++) {
 				Entity particle = particles.get(j);
 				StoreComponent storeComponent = Components.getStoreComponent(particle);
-				if (storeComponent != null && storeComponent.store != null)
-					storeComponent.store.free(particle);
-				else 
-					particle.delete();
+
+				storeComponent.store.free(particle);
+
+				// if (storeComponent != null && storeComponent.store != null)
+				// storeComponent.store.free(particle);
+				// else
+				// particle.delete();
 			}
 
 		}
 
 	}
-	
+
 	public static class RecalculateConvexHullScript extends ScriptJavaImpl {
 
 		@Override
@@ -197,7 +200,7 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 			Spatial spatial = Components.getSpatialComponent(e).getSpatial();
 
 			shapeRenderer.setColor(1f, 1f, 0f, 1f);
-			
+
 			shapeRenderer.begin(ShapeType.FilledCircle);
 			shapeRenderer.filledCircle(spatial.getX(), spatial.getY(), 0.1f, 20);
 			shapeRenderer.end();
@@ -210,14 +213,14 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 
 			if (bombBuildComponent.state != BombBuildState.TouchedCenter)
 				return;
-			
+
 			// if (bombBuildComponent.state == BombBuildState.TouchedCenter)
 			// shapeRenderer.setColor(1f, 0f, 0f, 1f);
 			// else
 			// shapeRenderer.setColor(0f, 0f, 1f, 1f);
-			
+
 			shapeRenderer.setColor(1f, 0f, 0f, 1f);
-			
+
 			shapeRenderer.begin(ShapeType.Line);
 			for (int i = 0; i < convexHull2d.getPointsCount(); i++) {
 				float x0 = convexHull2d.getX(i);

@@ -6,12 +6,11 @@ import com.gemserk.commons.artemis.events.EventManager;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityFactory;
 import com.gemserk.commons.artemis.templates.EntityTemplate;
+import com.gemserk.commons.artemis.utils.EntityStore;
 import com.gemserk.commons.gdx.GlobalTime;
-import com.gemserk.commons.gdx.games.SpatialImpl;
-import com.gemserk.componentsengine.utils.ParametersWrapper;
+import com.gemserk.games.ludumdare.al1.EntityStores;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
-import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 import com.gemserk.games.ludumdare.al1.triggers.PeriodicTriggerLogic;
 import com.gemserk.games.ludumdare.al1.triggers.Trigger;
 
@@ -21,6 +20,8 @@ public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 	EntityFactory entityFactory;
 
 	PeriodicTriggerLogic periodicTriggerLogic;
+
+	EntityStores entityStores;
 
 	@Override
 	public void init(World world, final Entity e) {
@@ -44,10 +45,15 @@ public class EnemyParticleSpawnerScript extends ScriptJavaImpl {
 		periodicTriggerLogic = new PeriodicTriggerLogic(3, 0.75f, new Trigger() {
 			@Override
 			public void trigger() {
-				EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
-				Entity entity = entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
-						.put("spatial", new SpatialImpl(0f, 0f)));
-				entity.addComponent(new StoreComponent(spawnerComponent.store));
+				EntityTemplate entityTemplate = spawnerComponent.entityTemplate;
+
+				EntityStore store = entityStores.get(entityTemplate.getClass());
+				store.get();
+
+				// Entity entity = entityFactory.instantiate(enemyParticleTemplate, new ParametersWrapper()//
+				// .put("spatial", new SpatialImpl(0f, 0f)));
+				// entity.addComponent(new StoreComponent(spawnerComponent.store));
+
 				// return entity;
 				// spawnerComponent.store.get();
 			}

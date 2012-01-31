@@ -38,6 +38,7 @@ import com.gemserk.commons.artemis.templates.EntityFactory;
 import com.gemserk.commons.artemis.templates.EntityFactoryImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplate;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
+import com.gemserk.commons.artemis.utils.EntityStore;
 import com.gemserk.commons.gdx.GameStateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
@@ -55,11 +56,15 @@ import com.gemserk.commons.gdx.screens.transitions.TransitionBuilder;
 import com.gemserk.commons.gdx.time.TimeStepProviderGameStateImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.text.CustomDecimalFormat;
+import com.gemserk.commons.utils.StoreFactory;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
+import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
 import com.gemserk.games.ludumdare.al1.scripts.StickControllerScript;
 import com.gemserk.games.ludumdare.al1.systems.RenderScriptSystem;
 import com.gemserk.games.ludumdare.al1.templates.CameraTemplate;
+import com.gemserk.games.ludumdare.al1.templates.EnemyParticleSimpleTemplate;
+import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
 import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ParticlesCenterTemplate;
@@ -116,12 +121,14 @@ public class PlayGameState extends GameStateImpl {
 		scene = new WorldWrapper(new World());
 
 		com.badlogic.gdx.physics.box2d.World physicsWorld = new com.badlogic.gdx.physics.box2d.World(new Vector2(0f, 0f), false);
-		EntityFactory entityFactory = new EntityFactoryImpl(scene.getWorld());
+		final EntityFactory entityFactory = new EntityFactoryImpl(scene.getWorld());
 		EventManager eventManager = new EventManagerImpl();
 
 		final BodyBuilder bodyBuilder = new BodyBuilder(physicsWorld);
 
 		TimeStepProviderGameStateImpl timeStepProvider = new TimeStepProviderGameStateImpl(this);
+
+		final EntityStores entityStores = new EntityStores();
 
 		injector.bind("entityFactory", entityFactory);
 		injector.bind("eventManager", eventManager);
@@ -131,6 +138,7 @@ public class PlayGameState extends GameStateImpl {
 		injector.bind("shapeRenderer", shapeRenderer);
 		injector.bind("timeStepProvider", timeStepProvider);
 		injector.bind("worldBounds", worldBounds);
+		injector.bind("entityStores", entityStores);
 
 		scene.addUpdateSystem(new PreviousStateSpatialSystem());
 		scene.addUpdateSystem(new ScriptSystem());
@@ -153,6 +161,26 @@ public class PlayGameState extends GameStateImpl {
 		scene.addRenderSystem(new RenderScriptSystem());
 
 		scene.init();
+
+		entityStores.put(EnemyParticleSimpleTemplate.class, new EntityStore(new StoreFactory<Entity>() {
+			@Override
+			public Entity createObject() {
+				Entity entity = entityFactory.instantiate(injector.getInstance(EnemyParticleSimpleTemplate.class));
+				// use the TemplateComponent instead
+				entity.addComponent(new StoreComponent(entityStores.get(EnemyParticleSimpleTemplate.class)));
+				return entity;
+			}
+		}));
+
+		entityStores.put(EnemyParticleTemplate.class, new EntityStore(new StoreFactory<Entity>() {
+			@Override
+			public Entity createObject() {
+				Entity entity = entityFactory.instantiate(injector.getInstance(EnemyParticleTemplate.class));
+				// use the TemplateComponent instead
+				entity.addComponent(new StoreComponent(entityStores.get(EnemyParticleTemplate.class)));
+				return entity;
+			}
+		}));
 
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
