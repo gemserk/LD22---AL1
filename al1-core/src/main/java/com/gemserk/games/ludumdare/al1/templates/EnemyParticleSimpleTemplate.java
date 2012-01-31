@@ -19,7 +19,6 @@ import com.gemserk.commons.artemis.components.SpatialComponent;
 import com.gemserk.commons.artemis.components.SpriteComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
-import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
@@ -35,6 +34,7 @@ import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.FollowRandomTargetComponent;
 import com.gemserk.games.ludumdare.al1.scripts.AliveTimeScript;
 import com.gemserk.games.ludumdare.al1.scripts.BounceWhenCollideScript;
+import com.gemserk.games.ludumdare.al1.scripts.LookToMovingDirectionScript;
 import com.gemserk.resources.ResourceManager;
 
 public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
@@ -66,12 +66,6 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 			SpatialComponent spatialComponent = Components.getSpatialComponent(e);
 			Spatial spatial = spatialComponent.getSpatial();
 
-			SpriteComponent spriteComponent = Components.getSpriteComponent(e);
-			spriteComponent.setUpdateRotation(false);
-
-			Sprite sprite = spriteComponent.getSprite();
-			sprite.setRotation(sprite.getRotation() + GlobalTime.getDelta() * -90f);
-
 			position.set(spatial.getX(), spatial.getY());
 
 			if (followRandomTargetComponent.position.dst(position) < 1f) {
@@ -84,7 +78,8 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 				force.mul(-3f);
 
-				physicsComponent.getBody().applyForceToCenter(force);
+				Body body = physicsComponent.getBody();
+				body.applyForceToCenter(force);
 			}
 
 		}
@@ -161,7 +156,8 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 				injector.getInstance(RandomizeParticleScript.class), //
 				injector.getInstance(FixedMovementScript.class), //
 				injector.getInstance(AliveTimeScript.class), //
-				injector.getInstance(BounceWhenCollideScript.class) //
+				injector.getInstance(BounceWhenCollideScript.class), //
+				injector.getInstance(LookToMovingDirectionScript.class) //
 		));
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al3);

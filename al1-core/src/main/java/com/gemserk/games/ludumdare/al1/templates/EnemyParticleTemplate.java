@@ -33,6 +33,7 @@ import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.scripts.AliveTimeScript;
 import com.gemserk.games.ludumdare.al1.scripts.BounceWhenCollideScript;
 import com.gemserk.games.ludumdare.al1.scripts.FollowMainCharacterScript;
+import com.gemserk.games.ludumdare.al1.scripts.LookToMovingDirectionScript;
 import com.gemserk.resources.ResourceManager;
 
 public class EnemyParticleTemplate extends EntityTemplateImpl {
@@ -111,7 +112,8 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 				injector.getInstance(RandomizeFollowParticleScript.class), //
 				injector.getInstance(FollowMainCharacterScript.class), //
 				injector.getInstance(AliveTimeScript.class), //
-				injector.getInstance(BounceWhenCollideScript.class)//
+				injector.getInstance(BounceWhenCollideScript.class),//
+				injector.getInstance(LookToMovingDirectionScript.class)//
 		));
 
 		Sprite sprite = resourceManager.getResourceValue(GameResources.Sprites.Al2);
