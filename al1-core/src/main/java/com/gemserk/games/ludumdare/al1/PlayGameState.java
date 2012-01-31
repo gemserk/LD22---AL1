@@ -284,12 +284,12 @@ public class PlayGameState extends GameStateImpl {
 		int sizeY = 1;
 
 		for (int i = -25; i < 25; i++) {
-			shapeRenderer.setColor(0f, 0f, 1f, 0.4f);
+			shapeRenderer.setColor(0f, 0f, 1f, 0.15f);
 			shapeRenderer.line(i * sizeX, -1000, i * sizeX, 1000);
 		}
 
 		for (int i = -25; i < 25; i++) {
-			shapeRenderer.setColor(0f, 0f, 1f, 0.4f);
+			shapeRenderer.setColor(0f, 0f, 1f, 0.15f);
 			shapeRenderer.line(-1000, i * sizeY, 1000, i * sizeY);
 		}
 
