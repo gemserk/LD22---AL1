@@ -10,7 +10,7 @@ import com.gemserk.games.ludumdare.al1.EntityStores;
 import com.gemserk.games.ludumdare.al1.triggers.PeriodicTriggerLogic;
 import com.gemserk.games.ludumdare.al1.triggers.Trigger;
 
-public class PeriodicEntitySpawnerScript extends ScriptJavaImpl {
+public class WaveScript extends ScriptJavaImpl {
 
 	EntityStores entityStores;
 
@@ -20,7 +20,7 @@ public class PeriodicEntitySpawnerScript extends ScriptJavaImpl {
 	private final int count;
 	private final float interval;
 	
-	public PeriodicEntitySpawnerScript(EntityTemplate entityTemplate, int count, float interval) {
+	public WaveScript(EntityTemplate entityTemplate, int count, float interval) {
 		this.entityTemplate = entityTemplate;
 		this.count = count;
 		this.interval = interval;

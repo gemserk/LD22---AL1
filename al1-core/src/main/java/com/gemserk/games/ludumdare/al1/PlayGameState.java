@@ -69,7 +69,7 @@ import com.gemserk.games.ludumdare.al1.templates.EnemyParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ForceInAreaTemplate;
 import com.gemserk.games.ludumdare.al1.templates.MainParticleTemplate;
 import com.gemserk.games.ludumdare.al1.templates.ParticlesCenterTemplate;
-import com.gemserk.games.ludumdare.al1.templates.SpawnerSpawnerTemplate;
+import com.gemserk.games.ludumdare.al1.templates.WaveSpawnerTemplate;
 
 public class PlayGameState extends GameStateImpl {
 
@@ -228,13 +228,13 @@ public class PlayGameState extends GameStateImpl {
 		// entityFactory.instantiate(shieldTemplate, new ParametersWrapper() //
 		// .put("camera", worldCamera));
 
-		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class), new ParametersWrapper() //
+		entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //
 				.put("interval", new Interval(5, 10)) //
 				.put("timeToSpawn", 3f) //
 				.put("entityTemplate", injector.getInstance(EnemyParticleSimpleTemplate.class)) //
 				);
 
-		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class), new ParametersWrapper() //
+		entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //
 				.put("interval", new Interval(3, 20)) //
 				.put("timeToSpawn", 10f) //
 				.put("entityTemplate", injector.getInstance(EnemyParticleTemplate.class)) //

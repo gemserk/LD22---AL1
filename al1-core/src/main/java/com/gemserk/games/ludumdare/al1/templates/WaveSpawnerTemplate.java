@@ -16,11 +16,11 @@ import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
 
-public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
+public class WaveSpawnerTemplate extends EntityTemplateImpl {
 
 	Injector injector;
 
-	public static class SpawnerSpawnerScript extends ScriptJavaImpl {
+	public static class WaveSpawnerScript extends ScriptJavaImpl {
 
 		Injector injector;
 		EntityFactory entityFactory;
@@ -37,7 +37,7 @@ public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
 
 			// instantiate an entity from the store.
 
-			entityFactory.instantiate(injector.getInstance(PeriodicEntitySpawnerTemplate.class), parameters //
+			entityFactory.instantiate(injector.getInstance(WaveTemplate.class), parameters //
 					.put("entityTemplate", spawnerComponent.entityTemplate));
 
 			// entityFactory.instantiate(new EntityTemplateImpl() {
@@ -67,6 +67,6 @@ public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
 		// EntityTemplate entityTemplate = injector.getInstance(EnemyParticleSimpleTemplate.class);
 
 		entity.addComponent(new SpawnerComponent(entityTemplate, interval, timeToSpawn.floatValue()));
-		entity.addComponent(new ScriptComponent(injector.getInstance(SpawnerSpawnerScript.class)));
+		entity.addComponent(new ScriptComponent(injector.getInstance(WaveSpawnerScript.class)));
 	}
 }
