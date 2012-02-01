@@ -30,8 +30,8 @@ import com.gemserk.games.leavemealone.GameResources;
 import com.gemserk.games.leavemealone.Groups;
 import com.gemserk.games.leavemealone.Tags;
 import com.gemserk.games.leavemealone.components.AliveComponent;
-import com.gemserk.games.leavemealone.components.Components;
 import com.gemserk.games.leavemealone.components.AliveComponent.State;
+import com.gemserk.games.leavemealone.components.Components;
 import com.gemserk.games.leavemealone.scripts.AliveTimeScript;
 import com.gemserk.games.leavemealone.scripts.BounceWhenCollideScript;
 import com.gemserk.games.leavemealone.scripts.FollowMainCharacterScript;
@@ -50,7 +50,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		// private final Rectangle worldRectangle = new Rectangle(-7.5f, -4.5f, 15f, 9f);
 
 		Rectangle worldBounds;
-		
+
 		ResourceManager<String> resourceManager;
 
 		@Override
@@ -81,9 +81,9 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 
 			LinearVelocityLimitComponent linearVelocityComponent = Components.getLinearVelocityComponent(e);
 			linearVelocityComponent.setLimit(0.6f * MathUtils.random(3.5f, 7.5f));
-			
-			////
-			
+
+			// //
+
 			Sound spawnSound = resourceManager.getResourceValue(GameResources.Sounds.Spawn);
 			spawnSound.play();
 		}
@@ -92,10 +92,6 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 
 	@Override
 	public void apply(Entity entity) {
-		Spatial spatial = parameters.get("spatial");
-		
-		if (spatial == null)
-			spatial = new SpatialImpl(0, 0);
 
 		Body body = bodyBuilder //
 				.fixture(bodyBuilder.fixtureDefBuilder() //
@@ -104,12 +100,13 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 						.maskBits(Collisions.None) //
 						.circleShape(0.2f)) //
 				.type(BodyType.DynamicBody) //
-				.position(spatial.getX(), spatial.getY()) //
-				.angle(spatial.getAngle()) //
+				.position(0f, 0f) //
+				.angle(0f) //
 				.userData(entity) //
 				.build();
 
-		spatial.setSize(0.5f, 0.5f);
+		// body.setTransform(spatial.getX(), spatial.getY(), spatial.getAngle());
+		// spatial.setSize(0.5f, 0.5f);
 
 		// entity.setGroup(Groups.EnemyCharacter);
 		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));
@@ -117,7 +114,7 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new PhysicsComponent(body));
 		entity.addComponent(new LinearVelocityLimitComponent(1f));
 
-		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, spatial)));
+		entity.addComponent(new SpatialComponent(new SpatialPhysicsImpl(body, 1f, 1f)));
 		entity.addComponent(new PreviousStateSpatialComponent());
 
 		entity.addComponent(new ScriptComponent( //
@@ -134,6 +131,18 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		entity.addComponent(new AliveComponent(1f));
 		entity.addComponent(spriteComponent);
 		entity.addComponent(new RenderableComponent(1));
+
+		// /
+
+		Spatial spatial = parameters.get("spatial");
+
+		if (spatial == null)
+			spatial = new SpatialImpl(0, 0);
+
+		Spatial spatial2 = Components.getSpatialComponent(entity).getSpatial();
+		spatial2.setPosition(spatial.getX(), spatial.getY());
+		spatial2.setAngle(0f);
+		spatial2.setSize(0.5f, 0.5f);
 
 	}
 }
