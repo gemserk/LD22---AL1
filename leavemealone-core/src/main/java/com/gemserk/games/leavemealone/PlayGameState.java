@@ -229,9 +229,8 @@ public class PlayGameState extends GameStateImpl {
 		// .put("camera", worldCamera));
 
 		entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //
-				.put("interval", new Interval(5, 10)) //
+				.put("interval", new Interval(7, 14)) //
 				.put("timeToSpawn", 1f) //
-				.put("entityTemplate", injector.getInstance(EnemyParticleSimpleTemplate.class)) //
 				);
 
 		// entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //

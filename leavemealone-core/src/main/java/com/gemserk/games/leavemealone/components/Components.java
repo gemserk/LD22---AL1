@@ -68,5 +68,13 @@ public class Components extends com.gemserk.commons.artemis.components.Component
 	public static BombBuildComponent getBombBuildComponent(Entity e) {
 		return bombBuildComponentClass.cast(e.getComponent(bombBuildComponentType));
 	}
+	
+	public static final Class<WaveComponent> waveComponentClass = WaveComponent.class;
+	public static final ComponentType waveComponentType = ComponentTypeManager.getTypeFor(waveComponentClass);
+	
+	public static WaveComponent getWaveComponent(Entity e) {
+		return waveComponentClass.cast(e.getComponent(waveComponentType));
+	}
+	
 }
 

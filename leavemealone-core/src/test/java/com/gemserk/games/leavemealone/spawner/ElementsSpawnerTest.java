@@ -25,7 +25,7 @@ public class ElementsSpawnerTest {
 	public void shouldBeDoneIfNothingToSpawn() {
 		MockElementSpawner mockElementSpawner = new MockElementSpawner();
 
-		ElementsSpawner elementsSpawner = new ElementsSpawner(new ArrayList<SpawnElement>(), mockElementSpawner);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(new ArrayList<SpawnElement>());
 
 		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertTrue(mockElementSpawner.spawnedElements.isEmpty());
@@ -39,7 +39,7 @@ public class ElementsSpawnerTest {
 		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
 		elements.add(spawnElement1);
 
-		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements);
 
 		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(false));
 		assertTrue(mockElementSpawner.spawnedElements.isEmpty());
@@ -53,8 +53,8 @@ public class ElementsSpawnerTest {
 		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
 		elements.add(spawnElement1);
 
-		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
-		elementsSpawner.update(1f);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements);
+		elementsSpawner.update(1f, mockElementSpawner);
 
 		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
@@ -73,8 +73,8 @@ public class ElementsSpawnerTest {
 		SpawnElement spawnElement2 = new SpawnElement(2f, null, null, null);
 		elements.add(spawnElement2);
 
-		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
-		elementsSpawner.update(3f);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements);
+		elementsSpawner.update(3f, mockElementSpawner);
 
 		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
@@ -94,17 +94,38 @@ public class ElementsSpawnerTest {
 		SpawnElement spawnElement2 = new SpawnElement(2f, null, null, null);
 		elements.add(spawnElement2);
 
-		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
-		elementsSpawner.update(1f);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements);
+		elementsSpawner.update(1f, mockElementSpawner);
 
 		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(false));
 
-		elementsSpawner.update(1f);
+		elementsSpawner.update(1f, mockElementSpawner);
 
 		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement1));
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement2));
+	}
+
+	@Test
+	public void shouldNotSpawnElementIfTimeGreaterThanElementTimeButOffset() {
+		MockElementSpawner mockElementSpawner = new MockElementSpawner();
+
+		ArrayList<SpawnElement> elements = new ArrayList<SpawnElement>();
+		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
+		elements.add(spawnElement1);
+
+		ElementsSpawner elementsSpawner = new ElementsSpawner(1f, elements);
+		elementsSpawner.update(1f, mockElementSpawner);
+
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(false));
+		assertTrue(mockElementSpawner.spawnedElements.isEmpty());
+
+		elementsSpawner.update(1f, mockElementSpawner);
+
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
+		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
+		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement1));
 	}
 
 }

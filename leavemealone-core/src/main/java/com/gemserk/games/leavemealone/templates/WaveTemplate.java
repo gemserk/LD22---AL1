@@ -1,7 +1,5 @@
 package com.gemserk.games.leavemealone.templates;
 
-import java.util.ArrayList;
-
 import com.artemis.Entity;
 import com.artemis.World;
 import com.gemserk.commons.artemis.components.ScriptComponent;
@@ -13,6 +11,8 @@ import com.gemserk.commons.artemis.utils.EntityStore;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.leavemealone.EntityStores;
+import com.gemserk.games.leavemealone.components.Components;
+import com.gemserk.games.leavemealone.components.WaveComponent;
 import com.gemserk.games.leavemealone.spawner.ElementSpawner;
 import com.gemserk.games.leavemealone.spawner.ElementsSpawner;
 import com.gemserk.games.leavemealone.spawner.SpawnElement;
@@ -27,38 +27,35 @@ public class WaveTemplate extends EntityTemplateImpl {
 		EntityFactory entityFactory;
 		EntityStores entityStores;
 
-		ElementsSpawner elementsSpawner;
-
 		Injector injector;
 
-		public WaveScript(Wave wave) {
-			elementsSpawner = new ElementsSpawner(new ArrayList<SpawnElement>(wave.elements), new ElementSpawner() {
-				@Override
-				public void spawn(SpawnElement element) {
-					EntityStore entityStore = entityStores.get(element.templateClass);
-					Entity e = entityStore.get();
-
-					EntityTemplate configuratorTemplate = injector.getInstance(element.configuratorTemplateClass);
-
-					configuratorTemplate.setParameters(element.parameters);
-					configuratorTemplate.apply(e);
-				}
-			});
-		}
+		ElementSpawner elementSpawner;
 
 		@Override
 		public void init(World world, Entity e) {
 			super.init(world, e);
-			// play spawner sound
+
+			elementSpawner = new ElementSpawner() {
+				@Override
+				public void spawn(SpawnElement element) {
+					EntityStore entityStore = entityStores.get(element.templateClass);
+					Entity e = entityStore.get();
+					EntityTemplate configuratorTemplate = injector.getInstance(element.configuratorTemplateClass);
+					configuratorTemplate.setParameters(element.parameters);
+					configuratorTemplate.apply(e);
+				}
+			};
+
 		}
 
 		@Override
 		public void update(World world, Entity e) {
-			if (elementsSpawner.isDone()) {
+			WaveComponent waveComponent = Components.getWaveComponent(e);
+			if (waveComponent.elementsSpawner.isDone()) {
 				e.delete();
 				return;
 			}
-			elementsSpawner.update(GlobalTime.getDelta());
+			waveComponent.elementsSpawner.update(GlobalTime.getDelta(), elementSpawner);
 		}
 
 	}
@@ -67,9 +64,9 @@ public class WaveTemplate extends EntityTemplateImpl {
 	public void apply(Entity entity) {
 		Wave wave = parameters.get("wave");
 
-		WaveScript waveScript = new WaveScript(wave);
-		injector.injectMembers(waveScript);
-		entity.addComponent(new ScriptComponent(waveScript));
+		entity.addComponent(new ScriptComponent(injector.getInstance(WaveScript.class)));
+		entity.addComponent(new WaveComponent(new ElementsSpawner(wave.elements)));
+
 	}
 
 }

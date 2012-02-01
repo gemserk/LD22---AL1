@@ -115,7 +115,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 			}
 
 			AliveComponent aliveComponent = Components.getAliveComponent(e);
-			aliveComponent.time = MathUtils.random(18f, 36f);
+			aliveComponent.time = MathUtils.random(9f, 18f);
 			aliveComponent.spawnTime = 1f;
 			aliveComponent.dyingTime = 1f;
 			aliveComponent.state = State.Spawning;
