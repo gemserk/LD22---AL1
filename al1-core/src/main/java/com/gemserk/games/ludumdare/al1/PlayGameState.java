@@ -235,7 +235,7 @@ public class PlayGameState extends GameStateImpl {
 				);
 
 		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class), new ParametersWrapper() //
-				.put("interval", new Interval(3, 15)) //
+				.put("interval", new Interval(3, 20)) //
 				.put("timeToSpawn", 10f) //
 				.put("entityTemplate", injector.getInstance(EnemyParticleTemplate.class)) //
 				);

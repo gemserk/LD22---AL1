@@ -11,9 +11,10 @@ import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.componentsengine.utils.Interval;
+import com.gemserk.componentsengine.utils.Parameters;
+import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.gemserk.games.ludumdare.al1.components.Components;
 import com.gemserk.games.ludumdare.al1.components.SpawnerComponent;
-import com.gemserk.games.ludumdare.al1.scripts.EnemyParticleSpawnerScript;
 
 public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
 
@@ -23,6 +24,8 @@ public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
 
 		Injector injector;
 		EntityFactory entityFactory;
+
+		private final Parameters parameters = new ParametersWrapper();
 
 		@Override
 		public void update(World world, Entity e) {
@@ -34,15 +37,18 @@ public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
 
 			// instantiate an entity from the store.
 
-			entityFactory.instantiate(new EntityTemplateImpl() {
-				@Override
-				public void apply(Entity entity) {
-					EnemyParticleSpawnerScript spawnerScript = new EnemyParticleSpawnerScript();
-					injector.injectMembers(spawnerScript);
-					entity.addComponent(new SpawnerComponent(spawnerComponent.entityTemplate, null, 0f));
-					entity.addComponent(new ScriptComponent(spawnerScript));
-				}
-			});
+			entityFactory.instantiate(injector.getInstance(PeriodicEntitySpawnerTemplate.class), parameters //
+					.put("entityTemplate", spawnerComponent.entityTemplate));
+
+			// entityFactory.instantiate(new EntityTemplateImpl() {
+			// @Override
+			// public void apply(Entity entity) {
+			// PeriodicEntitySpawnerScript spawnerScript = new PeriodicEntitySpawnerScript(spawnerComponent.entityTemplate);
+			// injector.injectMembers(spawnerScript);
+			// // entity.addComponent(new SpawnerComponent(spawnerComponent.entityTemplate, null, 0f));
+			// entity.addComponent(new ScriptComponent(spawnerScript));
+			// }
+			// });
 
 			spawnerComponent.timeToSpawn = MathUtils.random( //
 					spawnerComponent.spawnInterval.getMin(), //

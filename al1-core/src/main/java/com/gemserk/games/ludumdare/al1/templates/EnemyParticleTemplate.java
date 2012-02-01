@@ -2,6 +2,7 @@ package com.gemserk.games.ludumdare.al1.templates;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,6 +50,8 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		// private final Rectangle worldRectangle = new Rectangle(-7.5f, -4.5f, 15f, 9f);
 
 		Rectangle worldBounds;
+		
+		ResourceManager<String> resourceManager;
 
 		@Override
 		public void init(World world, Entity e) {
@@ -78,6 +81,11 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 
 			LinearVelocityLimitComponent linearVelocityComponent = Components.getLinearVelocityComponent(e);
 			linearVelocityComponent.setLimit(0.6f * MathUtils.random(3.5f, 7.5f));
+			
+			////
+			
+			Sound spawnSound = resourceManager.getResourceValue(GameResources.Sounds.Spawn);
+			spawnSound.play();
 		}
 
 	}
