@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.gemserk.commons.lwjgl.FocusableLwjglApplicationDelegate;
-import com.gemserk.games.leavemealone.Game;
 
 public class DesktopApplication {
 
@@ -45,7 +44,7 @@ public class DesktopApplication {
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		config.title = "Arielsan's Ludumdare 22 - Leave me alone!!";
+		config.title = "Gemserk's Leave me alone!!";
 		config.width = arguments.width;
 		config.height = arguments.height;
 		config.fullscreen = false;
