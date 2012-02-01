@@ -4,26 +4,26 @@
 .settings
 /bin
 
-al1-android/target
-al1-android/.classpath
-al1-android/.project
-al1-android/.settings
-al1-android/libs/
-al1-android/.externalToolBuilders/
-al1-android/gen/
-al1-android/bin/
+leavemealone-android/target
+leavemealone-android/.classpath
+leavemealone-android/.project
+leavemealone-android/.settings
+leavemealone-android/libs/
+leavemealone-android/.externalToolBuilders/
+leavemealone-android/gen/
+leavemealone-android/bin/
 
 
-al1-core/target
-al1-core/.classpath
-al1-core/.project
-al1-core/.settings
-al1-core/bin/
+leavemealone-core/target
+leavemealone-core/.classpath
+leavemealone-core/.project
+leavemealone-core/.settings
+leavemealone-core/bin/
 
-al1-desktop/hs_err*
-al1-desktop/target
-al1-desktop/.classpath
-al1-desktop/.project
-al1-desktop/.settings
-al1-desktop/bin/
+leavemealone-desktop/hs_err*
+leavemealone-desktop/target
+leavemealone-desktop/.classpath
+leavemealone-desktop/.project
+leavemealone-desktop/.settings
+leavemealone-desktop/bin/
 
