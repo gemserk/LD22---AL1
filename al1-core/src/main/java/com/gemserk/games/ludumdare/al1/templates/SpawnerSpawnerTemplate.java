@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityFactory;
+import com.gemserk.commons.artemis.templates.EntityTemplate;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.reflection.Injector;
@@ -53,8 +54,13 @@ public class SpawnerSpawnerTemplate extends EntityTemplateImpl {
 
 	@Override
 	public void apply(Entity entity) {
-		// Interval interval = parameters.get("interval");
-		entity.addComponent(new SpawnerComponent(injector.getInstance(EnemyParticleSimpleTemplate.class), new Interval(5, 10), 1f));
+		Interval interval = parameters.get("interval");
+		Float timeToSpawn = parameters.get("timeToSpawn", new Float(0f));
+		EntityTemplate entityTemplate = parameters.get("entityTemplate");
+
+		// EntityTemplate entityTemplate = injector.getInstance(EnemyParticleSimpleTemplate.class);
+
+		entity.addComponent(new SpawnerComponent(entityTemplate, interval, timeToSpawn.floatValue()));
 		entity.addComponent(new ScriptComponent(injector.getInstance(SpawnerSpawnerScript.class)));
 	}
 }

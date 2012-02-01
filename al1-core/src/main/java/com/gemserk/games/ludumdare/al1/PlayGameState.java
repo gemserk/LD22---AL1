@@ -57,6 +57,7 @@ import com.gemserk.commons.gdx.time.TimeStepProviderGameStateImpl;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.commons.text.CustomDecimalFormat;
 import com.gemserk.commons.utils.StoreFactory;
+import com.gemserk.componentsengine.utils.Interval;
 import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.gemserk.games.ludumdare.al1.components.StoreComponent;
 import com.gemserk.games.ludumdare.al1.scripts.GameLogicScript;
@@ -71,6 +72,26 @@ import com.gemserk.games.ludumdare.al1.templates.ParticlesCenterTemplate;
 import com.gemserk.games.ludumdare.al1.templates.SpawnerSpawnerTemplate;
 
 public class PlayGameState extends GameStateImpl {
+
+	public static class TemplateStoreFactory implements StoreFactory<Entity> {
+
+		EntityFactory entityFactory;
+		EntityStores entityStores;
+		Injector injector;
+
+		Class<? extends EntityTemplate> templateClass;
+
+		public TemplateStoreFactory(Class<? extends EntityTemplate> templateClass) {
+			this.templateClass = templateClass;
+		}
+
+		@Override
+		public Entity createObject() {
+			Entity entity = entityFactory.instantiate(injector.getInstance(templateClass));
+			entity.addComponent(new StoreComponent(entityStores.get(templateClass)));
+			return entity;
+		}
+	}
 
 	Game game;
 	Injector injector;
@@ -162,25 +183,17 @@ public class PlayGameState extends GameStateImpl {
 
 		scene.init();
 
-		entityStores.put(EnemyParticleSimpleTemplate.class, new EntityStore(new StoreFactory<Entity>() {
-			@Override
-			public Entity createObject() {
-				Entity entity = entityFactory.instantiate(injector.getInstance(EnemyParticleSimpleTemplate.class));
-				// use the TemplateComponent instead
-				entity.addComponent(new StoreComponent(entityStores.get(EnemyParticleSimpleTemplate.class)));
-				return entity;
-			}
-		}));
+		TemplateStoreFactory simpleParticleTemplateStore = new TemplateStoreFactory(EnemyParticleSimpleTemplate.class);
+		injector.injectMembers(simpleParticleTemplateStore);
+		EntityStore simpleParticleStore = new EntityStore(simpleParticleTemplateStore);
+		simpleParticleStore.preCreate(10);
+		entityStores.put(EnemyParticleSimpleTemplate.class, simpleParticleStore);
 
-		entityStores.put(EnemyParticleTemplate.class, new EntityStore(new StoreFactory<Entity>() {
-			@Override
-			public Entity createObject() {
-				Entity entity = entityFactory.instantiate(injector.getInstance(EnemyParticleTemplate.class));
-				// use the TemplateComponent instead
-				entity.addComponent(new StoreComponent(entityStores.get(EnemyParticleTemplate.class)));
-				return entity;
-			}
-		}));
+		TemplateStoreFactory particleTemplateStore = new TemplateStoreFactory(EnemyParticleTemplate.class);
+		injector.injectMembers(particleTemplateStore);
+		EntityStore particleStore = new EntityStore(particleTemplateStore);
+		particleStore.preCreate(10);
+		entityStores.put(EnemyParticleTemplate.class, particleStore);
 
 		entityFactory.instantiate(new EntityTemplateImpl() {
 			@Override
@@ -215,7 +228,17 @@ public class PlayGameState extends GameStateImpl {
 		// entityFactory.instantiate(shieldTemplate, new ParametersWrapper() //
 		// .put("camera", worldCamera));
 
-		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class));
+		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class), new ParametersWrapper() //
+				.put("interval", new Interval(5, 10)) //
+				.put("timeToSpawn", 3f) //
+				.put("entityTemplate", injector.getInstance(EnemyParticleSimpleTemplate.class)) //
+				);
+
+		entityFactory.instantiate(injector.getInstance(SpawnerSpawnerTemplate.class), new ParametersWrapper() //
+				.put("interval", new Interval(3, 15)) //
+				.put("timeToSpawn", 10f) //
+				.put("entityTemplate", injector.getInstance(EnemyParticleTemplate.class)) //
+				);
 
 		// entityFactory.instantiate(new EntityTemplateImpl() {
 		// @Override
