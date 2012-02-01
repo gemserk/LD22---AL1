@@ -37,7 +37,7 @@ public class WaveSpawnerTemplate extends EntityTemplateImpl {
 
 			// instantiate an entity from the store.
 
-			entityFactory.instantiate(injector.getInstance(WaveTemplate.class), parameters //
+			entityFactory.instantiate(injector.getInstance(OldWaveTemplate.class), parameters //
 					.put("entityTemplate", spawnerComponent.entityTemplate));
 
 			// entityFactory.instantiate(new EntityTemplateImpl() {
