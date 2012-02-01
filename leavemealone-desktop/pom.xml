@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.gemserk.games.ludumdare.al1</groupId>
-		<artifactId>al1</artifactId>
+		<groupId>com.gemserk.games.leavemealone</groupId>
+		<artifactId>leavemealone</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.gemserk.games.ludumdare.al1</groupId>
-	<artifactId>al1-desktop</artifactId>
+	<groupId>com.gemserk.games.leavemealone</groupId>
+	<artifactId>leavemealone-desktop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -82,7 +82,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>al1-core</artifactId>
+			<artifactId>leavemealone-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

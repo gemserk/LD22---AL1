@@ -2,17 +2,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.gemserk.games.ludumdare.al1</groupId>
-		<artifactId>al1</artifactId>
+		<groupId>com.gemserk.games.leavemealone</groupId>
+		<artifactId>leavemealone</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-		<groupId>com.gemserk.games.ludumdare.al1</groupId>
-	<artifactId>al1-core</artifactId>
+	
+	<groupId>com.gemserk.games.leavemealone</groupId>
+	<artifactId>leavemealone-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Arielsan's Ludumdare 22 - Al1 - Core</name>
-	<description>Arielsan's Ludumdare 22 - Al1 - Core</description>
+	<name>Leave me alone - Core</name>
+	<description>Leave me alone - Core</description>
 
 	<dependencies>
 		<dependency>

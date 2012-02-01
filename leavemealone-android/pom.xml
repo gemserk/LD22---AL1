@@ -2,18 +2,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.gemserk.games.ludumdare.al1</groupId>
-		<artifactId>al1</artifactId>
+		<groupId>com.gemserk.games.leavemealone</groupId>
+		<artifactId>leavemealone</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.gemserk.games.ludumdare.al1</groupId>
-	<artifactId>al1-android</artifactId>
+	<groupId>com.gemserk.games.leavemealone</groupId>
+	<artifactId>leavemealone-android</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>apk</packaging>
 
-	<name>Arielsan's Ludumdare 22 - Al1 - Android</name>
-	<description>Arielsan's Ludumdare 22 - Al1 - Android</description>
+	<name>Leave me alone - Android</name>
+	<description>Leave me alone - Android</description>
 
 	<properties>
 		<!-- set a custom format that is guaranteed to grow as a Long number, so 
@@ -33,7 +33,7 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<finalName>al1-android</finalName>
+		<finalName>leavemealone-android</finalName>
 
 		<plugins>
 			<plugin>
@@ -205,7 +205,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>al1-core</artifactId>
+			<artifactId>leavemealone-core</artifactId>
 			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>

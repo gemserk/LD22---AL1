@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.gemserk.games.ludumdare.al1</groupId>
-	<artifactId>al1</artifactId>
+	<groupId>com.gemserk.games.leavemealone</groupId>
+	<artifactId>leavemealone</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Arielsan's Ludumdare 22 - Al1</name>
-	<description>Arielsan's Ludumdare 22 - Al1</description>
+	<name>Leave me alone</name>
+	<description>Leave me alone</description>
 
 	<organization>
 		<name>Gemserk</name>
@@ -37,9 +37,9 @@
 	</distributionManagement>
 
 	<modules>
-		<module>al1-core</module>
-		<module>al1-android</module>
-		<module>al1-desktop</module>
+		<module>leavemealone-core</module>
+		<module>leavemealone-android</module>
+		<module>leavemealone-desktop</module>
 	</modules>
 
 	<properties>
