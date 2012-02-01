@@ -29,11 +29,11 @@ import com.gemserk.games.leavemealone.Events;
 import com.gemserk.games.leavemealone.Groups;
 import com.gemserk.games.leavemealone.Tags;
 import com.gemserk.games.leavemealone.components.BombBuildComponent;
+import com.gemserk.games.leavemealone.components.BombBuildComponent.BombBuildState;
 import com.gemserk.games.leavemealone.components.Components;
 import com.gemserk.games.leavemealone.components.ConvexHullComponent;
 import com.gemserk.games.leavemealone.components.RenderScriptComponent;
 import com.gemserk.games.leavemealone.components.StoreComponent;
-import com.gemserk.games.leavemealone.components.BombBuildComponent.BombBuildState;
 import com.gemserk.resources.ResourceManager;
 
 public class ParticlesCenterTemplate extends EntityTemplateImpl {
@@ -102,12 +102,12 @@ public class ParticlesCenterTemplate extends EntityTemplateImpl {
 				Entity particle = particles.get(j);
 				StoreComponent storeComponent = Components.getStoreComponent(particle);
 
-				storeComponent.store.free(particle);
-
-				// if (storeComponent != null && storeComponent.store != null)
 				// storeComponent.store.free(particle);
-				// else
-				// particle.delete();
+
+				if (storeComponent != null && storeComponent.store != null)
+					storeComponent.store.free(particle);
+				else
+					particle.delete();
 			}
 
 		}

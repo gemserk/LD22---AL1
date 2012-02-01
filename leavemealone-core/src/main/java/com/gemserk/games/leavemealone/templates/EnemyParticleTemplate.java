@@ -23,7 +23,6 @@ import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialImpl;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
-import com.gemserk.commons.gdx.math.MathUtils2;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.leavemealone.Collisions;
 import com.gemserk.games.leavemealone.GameResources;
@@ -57,21 +56,21 @@ public class EnemyParticleTemplate extends EntityTemplateImpl {
 		public void init(World world, Entity e) {
 			Entity mainCharacter = world.getTagManager().getEntity(Tags.MainCharacter);
 
-			if (mainCharacter != null) {
-				Spatial mainCharacterSpatial = Components.getSpatialComponent(mainCharacter).getSpatial();
-				Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-
-				// EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
-
-				position.set(MathUtils.random(5f, 12f), 0f);
-				position.rotate(MathUtils.random(0, 360f));
-
-				position.add(mainCharacterSpatial.getX(), mainCharacterSpatial.getY());
-
-				MathUtils2.truncate(position, worldBounds);
-
-				spatial.setPosition(position.x, position.y);
-			}
+			// if (mainCharacter != null) {
+			// Spatial mainCharacterSpatial = Components.getSpatialComponent(mainCharacter).getSpatial();
+			// Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+			//
+			// // EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
+			//
+			// position.set(MathUtils.random(5f, 12f), 0f);
+			// position.rotate(MathUtils.random(0, 360f));
+			//
+			// position.add(mainCharacterSpatial.getX(), mainCharacterSpatial.getY());
+			//
+			// MathUtils2.truncate(position, worldBounds);
+			//
+			// spatial.setPosition(position.x, position.y);
+			// }
 
 			AliveComponent aliveComponent = Components.getAliveComponent(e);
 			aliveComponent.time = MathUtils.random(15f, 30f);

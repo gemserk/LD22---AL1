@@ -7,14 +7,16 @@ import com.artemis.World;
 import com.gemserk.commons.artemis.components.ScriptComponent;
 import com.gemserk.commons.artemis.scripts.ScriptJavaImpl;
 import com.gemserk.commons.artemis.templates.EntityFactory;
+import com.gemserk.commons.artemis.templates.EntityTemplate;
 import com.gemserk.commons.artemis.templates.EntityTemplateImpl;
+import com.gemserk.commons.artemis.utils.EntityStore;
 import com.gemserk.commons.gdx.GlobalTime;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.leavemealone.EntityStores;
 import com.gemserk.games.leavemealone.spawner.ElementSpawner;
+import com.gemserk.games.leavemealone.spawner.ElementsSpawner;
 import com.gemserk.games.leavemealone.spawner.SpawnElement;
 import com.gemserk.games.leavemealone.spawner.Wave;
-import com.gemserk.games.leavemealone.spawner.WaveSpawner;
 
 public class WaveTemplate extends EntityTemplateImpl {
 
@@ -25,14 +27,21 @@ public class WaveTemplate extends EntityTemplateImpl {
 		EntityFactory entityFactory;
 		EntityStores entityStores;
 
-		WaveSpawner waveSpawner;
+		ElementsSpawner elementsSpawner;
+
+		Injector injector;
 
 		public WaveScript(Wave wave) {
-			waveSpawner = new WaveSpawner(new ArrayList<SpawnElement>(wave.elements), new ElementSpawner() {
+			elementsSpawner = new ElementsSpawner(new ArrayList<SpawnElement>(wave.elements), new ElementSpawner() {
 				@Override
 				public void spawn(SpawnElement element) {
-					// entityStores.get(element.template);
-					entityFactory.instantiate(element.template, element.parameters);
+					EntityStore entityStore = entityStores.get(element.templateClass);
+					Entity e = entityStore.get();
+
+					EntityTemplate configuratorTemplate = injector.getInstance(element.configuratorTemplateClass);
+
+					configuratorTemplate.setParameters(element.parameters);
+					configuratorTemplate.apply(e);
 				}
 			});
 		}
@@ -45,11 +54,11 @@ public class WaveTemplate extends EntityTemplateImpl {
 
 		@Override
 		public void update(World world, Entity e) {
-			if (waveSpawner.isDone()) {
+			if (elementsSpawner.isDone()) {
 				e.delete();
 				return;
 			}
-			waveSpawner.update(GlobalTime.getDelta());
+			elementsSpawner.update(GlobalTime.getDelta());
 		}
 
 	}

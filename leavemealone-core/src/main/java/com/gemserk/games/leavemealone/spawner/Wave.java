@@ -5,6 +5,20 @@ import java.util.List;
 
 public class Wave {
 	
-	public List<SpawnElement> elements = new ArrayList<SpawnElement>();
+	public List<SpawnElement> elements;
+	
+	public Wave(List<SpawnElement> elements) {
+		this.elements = elements;
+	}
+	
+	public Wave() {
+		this(new ArrayList<SpawnElement>());
+	}
+	
+	public Wave(SpawnElement ...elements) {
+		this.elements = new ArrayList<SpawnElement>();
+		for (int i = 0; i < elements.length; i++) 
+			this.elements.add(elements[i]);
+	}
 
 }

@@ -24,16 +24,15 @@ import com.gemserk.commons.gdx.box2d.BodyBuilder;
 import com.gemserk.commons.gdx.games.Spatial;
 import com.gemserk.commons.gdx.games.SpatialImpl;
 import com.gemserk.commons.gdx.games.SpatialPhysicsImpl;
-import com.gemserk.commons.gdx.math.MathUtils2;
 import com.gemserk.commons.reflection.Injector;
 import com.gemserk.games.leavemealone.Collisions;
 import com.gemserk.games.leavemealone.GameResources;
 import com.gemserk.games.leavemealone.Groups;
 import com.gemserk.games.leavemealone.Tags;
 import com.gemserk.games.leavemealone.components.AliveComponent;
+import com.gemserk.games.leavemealone.components.AliveComponent.State;
 import com.gemserk.games.leavemealone.components.Components;
 import com.gemserk.games.leavemealone.components.FollowRandomTargetComponent;
-import com.gemserk.games.leavemealone.components.AliveComponent.State;
 import com.gemserk.games.leavemealone.scripts.AliveTimeScript;
 import com.gemserk.games.leavemealone.scripts.BounceWhenCollideScript;
 import com.gemserk.games.leavemealone.scripts.LookToMovingDirectionScript;
@@ -49,7 +48,7 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 		private final Vector2 position = new Vector2();
 		private final Vector2 force = new Vector2();
-		
+
 		@Override
 		public void init(World world, Entity e) {
 			FollowRandomTargetComponent followRandomTargetComponent = Components.getFollowRandomTargetComponent(e);
@@ -90,11 +89,11 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 
 	public static class RandomizeParticleScript extends ScriptJavaImpl {
 
-		private final Vector2 position = new Vector2();
+//		private final Vector2 position = new Vector2();
 		// private final Rectangle worldRectangle = new Rectangle(-7.5f, -4.5f, 15f, 9f);
 
 		Rectangle worldBounds;
-		
+
 		ResourceManager<String> resourceManager;
 
 		@Override
@@ -102,19 +101,17 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 			Entity mainCharacter = world.getTagManager().getEntity(Tags.MainCharacter);
 
 			if (mainCharacter != null) {
-				Spatial mainCharacterSpatial = Components.getSpatialComponent(mainCharacter).getSpatial();
-				Spatial spatial = Components.getSpatialComponent(e).getSpatial();
-
-				// EntityTemplate enemyParticleTemplate = spawnerComponent.entityTemplate;
-
-				position.set(MathUtils.random(5f, 12f), 0f);
-				position.rotate(MathUtils.random(0, 360f));
-
-				position.add(mainCharacterSpatial.getX(), mainCharacterSpatial.getY());
-
-				MathUtils2.truncate(position, worldBounds);
-
-				spatial.setPosition(position.x, position.y);
+				// Spatial mainCharacterSpatial = Components.getSpatialComponent(mainCharacter).getSpatial();
+				// Spatial spatial = Components.getSpatialComponent(e).getSpatial();
+				//
+				// position.set(MathUtils.random(5f, 12f), 0f);
+				// position.rotate(MathUtils.random(0, 360f));
+				//
+				// position.add(mainCharacterSpatial.getX(), mainCharacterSpatial.getY());
+				//
+				// MathUtils2.truncate(position, worldBounds);
+				//
+				// spatial.setPosition(position.x, position.y);
 			}
 
 			AliveComponent aliveComponent = Components.getAliveComponent(e);
@@ -126,21 +123,15 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 			LinearVelocityLimitComponent linearVelocityComponent = Components.getLinearVelocityComponent(e);
 			linearVelocityComponent.setLimit(0.6f * MathUtils.random(3.5f, 6.5f));
 			
-			///
-			
 			Sound spawnSound = resourceManager.getResourceValue(GameResources.Sounds.Spawn);
 			spawnSound.play();
-			
 		}
 
 	}
 
 	@Override
 	public void apply(Entity entity) {
-		Spatial spatial = parameters.get("spatial");
-		
-		if (spatial == null)
-			spatial = new SpatialImpl(0, 0);
+		Spatial spatial = new SpatialImpl(0, 0, 0.5f, 0.5f, 0f);
 
 		Body body = bodyBuilder //
 				.fixture(bodyBuilder.fixtureDefBuilder() //
@@ -154,7 +145,6 @@ public class EnemyParticleSimpleTemplate extends EntityTemplateImpl {
 				.userData(entity) //
 				.build();
 
-		spatial.setSize(0.5f, 0.5f);
 
 		// entity.setGroup(Groups.EnemyCharacter);
 		entity.addComponent(new GroupComponent(Groups.EnemyCharacter));

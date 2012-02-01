@@ -8,7 +8,7 @@ import java.util.List;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 
-public class WaveSpawnerTest {
+public class ElementsSpawnerTest {
 
 	class MockElementSpawner implements ElementSpawner {
 
@@ -25,9 +25,9 @@ public class WaveSpawnerTest {
 	public void shouldBeDoneIfNothingToSpawn() {
 		MockElementSpawner mockElementSpawner = new MockElementSpawner();
 
-		WaveSpawner waveSpawner = new WaveSpawner(new ArrayList<SpawnElement>(), mockElementSpawner);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(new ArrayList<SpawnElement>(), mockElementSpawner);
 
-		assertThat(waveSpawner.isDone(), IsEqual.equalTo(true));
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertTrue(mockElementSpawner.spawnedElements.isEmpty());
 	}
 
@@ -36,12 +36,12 @@ public class WaveSpawnerTest {
 		MockElementSpawner mockElementSpawner = new MockElementSpawner();
 
 		ArrayList<SpawnElement> elements = new ArrayList<SpawnElement>();
-		SpawnElement spawnElement1 = new SpawnElement(1f, null, null);
+		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
 		elements.add(spawnElement1);
 
-		WaveSpawner waveSpawner = new WaveSpawner(elements, mockElementSpawner);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
 
-		assertThat(waveSpawner.isDone(), IsEqual.equalTo(false));
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(false));
 		assertTrue(mockElementSpawner.spawnedElements.isEmpty());
 	}
 
@@ -50,58 +50,58 @@ public class WaveSpawnerTest {
 		MockElementSpawner mockElementSpawner = new MockElementSpawner();
 
 		ArrayList<SpawnElement> elements = new ArrayList<SpawnElement>();
-		SpawnElement spawnElement1 = new SpawnElement(1f, null, null);
+		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
 		elements.add(spawnElement1);
 
-		WaveSpawner waveSpawner = new WaveSpawner(elements, mockElementSpawner);
-		waveSpawner.update(1f);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
+		elementsSpawner.update(1f);
 
-		assertThat(waveSpawner.isDone(), IsEqual.equalTo(true));
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement1));
 	}
-	
+
 	@Test
 	public void shouldSpawnMultipleElementsInOneUpdate() {
 		MockElementSpawner mockElementSpawner = new MockElementSpawner();
 
 		ArrayList<SpawnElement> elements = new ArrayList<SpawnElement>();
 
-		SpawnElement spawnElement1 = new SpawnElement(1f, null, null);
+		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
 		elements.add(spawnElement1);
 
-		SpawnElement spawnElement2 = new SpawnElement(2f, null, null);
+		SpawnElement spawnElement2 = new SpawnElement(2f, null, null, null);
 		elements.add(spawnElement2);
 
-		WaveSpawner waveSpawner = new WaveSpawner(elements, mockElementSpawner);
-		waveSpawner.update(3f);
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
+		elementsSpawner.update(3f);
 
-		assertThat(waveSpawner.isDone(), IsEqual.equalTo(true));
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement1));
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement2));
 	}
-	
+
 	@Test
 	public void shouldSpawnMultipleElementsInMultipleUpdates() {
 		MockElementSpawner mockElementSpawner = new MockElementSpawner();
 
 		ArrayList<SpawnElement> elements = new ArrayList<SpawnElement>();
 
-		SpawnElement spawnElement1 = new SpawnElement(1f, null, null);
+		SpawnElement spawnElement1 = new SpawnElement(1f, null, null, null);
 		elements.add(spawnElement1);
 
-		SpawnElement spawnElement2 = new SpawnElement(2f, null, null);
+		SpawnElement spawnElement2 = new SpawnElement(2f, null, null, null);
 		elements.add(spawnElement2);
 
-		WaveSpawner waveSpawner = new WaveSpawner(elements, mockElementSpawner);
-		waveSpawner.update(1f);
-		
-		assertThat(waveSpawner.isDone(), IsEqual.equalTo(false));
-		
-		waveSpawner.update(1f);
-		
-		assertThat(waveSpawner.isDone(), IsEqual.equalTo(true));
+		ElementsSpawner elementsSpawner = new ElementsSpawner(elements, mockElementSpawner);
+		elementsSpawner.update(1f);
+
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(false));
+
+		elementsSpawner.update(1f);
+
+		assertThat(elementsSpawner.isDone(), IsEqual.equalTo(true));
 		assertFalse(mockElementSpawner.spawnedElements.isEmpty());
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement1));
 		assertTrue(mockElementSpawner.spawnedElements.contains(spawnElement2));

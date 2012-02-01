@@ -230,15 +230,15 @@ public class PlayGameState extends GameStateImpl {
 
 		entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //
 				.put("interval", new Interval(5, 10)) //
-				.put("timeToSpawn", 3f) //
+				.put("timeToSpawn", 1f) //
 				.put("entityTemplate", injector.getInstance(EnemyParticleSimpleTemplate.class)) //
 				);
 
-		entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //
-				.put("interval", new Interval(3, 20)) //
-				.put("timeToSpawn", 10f) //
-				.put("entityTemplate", injector.getInstance(EnemyParticleTemplate.class)) //
-				);
+		// entityFactory.instantiate(injector.getInstance(WaveSpawnerTemplate.class), new ParametersWrapper() //
+		// .put("interval", new Interval(3, 20)) //
+		// .put("timeToSpawn", 10f) //
+		// .put("entityTemplate", injector.getInstance(EnemyParticleTemplate.class)) //
+		// );
 
 		// entityFactory.instantiate(new EntityTemplateImpl() {
 		// @Override
