@@ -12,27 +12,26 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Arielsan's Ludumdare 22 - Al1 - PC</name>
-	<description>Arielsan's Ludumdare 22 - Al1 - PC</description>
+	<name>Leave me alone - PC module</name>
+	<description>Leave me alone - PC module</description>
 
 	<url>http://blog.gemserk.com</url>
 
 	<properties>
-		<webstartName>Arielsan's Ludumdare 22 - Leave me alone!!</webstartName>
-		<webstartDescription>Arielsan's Ludumdare 22 - Leave me alone!!</webstartDescription>
+		<webstartName>Leave me alone!!</webstartName>
+		<webstartDescription>Leave me alone!!</webstartDescription>
 		<webstartCodebase>http://www.gemserk.com/prototipos/${project.parent.artifactId}-latest/</webstartCodebase>
 
-		<!-- finalName>${project.artifactId}-${project.version}</finalName -->
 		<finalName>${project.artifactId}-${project.version}</finalName>
 
-		<webstartMain>com.gemserk.games.ludumdare.al1.DesktopApplication</webstartMain>
-		<appletMain>com.gemserk.games.ludumdare.al1.Applet</appletMain>
+		<webstartMain>com.gemserk.games.leavemealone.DesktopApplication</webstartMain>
+		<appletMain>com.gemserk.games.leavemealone.Applet</appletMain>
 
-		<appletGameParameter>com.gemserk.games.ludumdare.al1.Applet</appletGameParameter>
+		<appletGameParameter>com.gemserk.games.leavemealone.Applet</appletGameParameter>
 
 		<mainClass>${webstartMain}</mainClass>
 
-		<jnlp.applet.mainClass>com.gemserk.games.ludumdare.al1.Applet</jnlp.applet.mainClass>
+		<jnlp.applet.mainClass>com.gemserk.games.leavemealone.Applet</jnlp.applet.mainClass>
 
 		<natives>${basedir}/target/natives/</natives>
 

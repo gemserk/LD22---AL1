@@ -1,6 +1,6 @@
 package com.gemserk.games.leavemealone.triggers;
 
-import com.gemserk.games.ludumdare.al1.triggers.Trigger;
+import com.gemserk.games.leavemealone.triggers.Trigger;
 
 public class MockTrigger implements Trigger {
 
